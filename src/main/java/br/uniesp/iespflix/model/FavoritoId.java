@@ -10,10 +10,11 @@ import java.util.UUID;
 @Embeddable
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class FavoritoId {
+public class FavoritoId implements Serializable {
 
     @Column(name = "usuario_id")
     private UUID usuarioId;
