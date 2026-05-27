@@ -8,6 +8,9 @@ import br.uniesp.iespflix.repository.MetodoPagamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import br.uniesp.iespflix.dto.MetodoPagamentoDTO;
+import br.uniesp.iespflix.mapper.MetodoPagamentoMapper;
+import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,15 +24,22 @@ public class MetodoPagamentoService {
     private final MetodoPagamentoRepository metodoPagamentoRepository;
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final MetodoPagamentoMapper metodoPagamentoMapper;
 
-    public List<MetodoPagamento> listarPorUsuario(UUID usuarioId) {
-        return metodoPagamentoRepository.findByUsuarioId(usuarioId);
+    public List<MetodoPagamentoDTO> listarPorUsuario(UUID usuarioId) {
+
+        return metodoPagamentoRepository.findByUsuarioId(usuarioId)
+                .stream()
+                .map(metodoPagamentoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public MetodoPagamento cadastrar(UUID usuarioId, MetodoPagamento metodoPagamento) {
+    public MetodoPagamentoDTO cadastrar(UUID usuarioId, MetodoPagamentoDTO dto) {
         UsuarioDTO usuarioDTO = usuarioService.buscarPorId(usuarioId);
         Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+
+        MetodoPagamento metodoPagamento = metodoPagamentoMapper.toEntity(dto);
 
         metodoPagamento.setUsuario(usuario);
         metodoPagamento.setCriadoEm(LocalDateTime.now());
@@ -38,6 +48,8 @@ public class MetodoPagamentoService {
             metodoPagamento.setTokenGateway(UUID.randomUUID().toString());
         }
 
-        return metodoPagamentoRepository.save(metodoPagamento);
+        MetodoPagamento metodoPagamentoSalvo = metodoPagamentoRepository.save(metodoPagamento);
+
+        return metodoPagamentoMapper.toDTO(metodoPagamentoSalvo);
     }
 }

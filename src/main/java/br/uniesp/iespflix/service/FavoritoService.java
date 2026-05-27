@@ -12,6 +12,9 @@ import br.uniesp.iespflix.repository.FavoritoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import br.uniesp.iespflix.dto.FavoritoDTO;
+import br.uniesp.iespflix.mapper.FavoritoMapper;
+import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,13 +30,18 @@ public class FavoritoService {
     private final ConteudoService conteudoService;
     private final UsuarioMapper usuarioMapper;
     private final ConteudoMapper conteudoMapper;
+    private final FavoritoMapper favoritoMapper;
 
-    public List<Favorito> listarFavoritosDoUsuario(UUID usuarioId) {
-        return favoritoRepository.findByUsuarioId(usuarioId);
+    public List<FavoritoDTO> listarFavoritosDoUsuario(UUID usuarioId) {
+
+        return favoritoRepository.findByUsuarioId(usuarioId)
+                .stream()
+                .map(favoritoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public Favorito favoritar(UUID usuarioId, UUID conteudoId) {
+    public FavoritoDTO favoritar(UUID usuarioId, UUID conteudoId) {
         if (favoritoRepository.existsByIdUsuarioIdAndIdConteudoId(usuarioId, conteudoId)) {
             throw new RuntimeException("Este conteúdo já está na lista de favoritos do usuário.");
         }
@@ -53,7 +61,8 @@ public class FavoritoService {
                 .criadoEm(LocalDateTime.now())
                 .build();
 
-        return favoritoRepository.save(favorito);
+        Favorito favoritoSalvo = favoritoRepository.save(favorito);
+        return favoritoMapper.toDTO(favoritoSalvo);
     }
 
     @Transactional
