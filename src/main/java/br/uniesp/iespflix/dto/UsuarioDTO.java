@@ -1,6 +1,7 @@
 package br.uniesp.iespflix.dto;
 
 import br.uniesp.iespflix.enums.PerfilUsuario;
+import br.uniesp.iespflix.validation.SenhaForte;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -31,6 +32,7 @@ public class UsuarioDTO {
 
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
+    @SenhaForte
     private String senha;
 
     @Pattern(

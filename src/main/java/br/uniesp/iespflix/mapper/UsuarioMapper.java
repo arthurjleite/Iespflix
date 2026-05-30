@@ -36,7 +36,7 @@ public class UsuarioMapper {
                 .nomeCompleto(dto.getNomeCompleto())
                 .dataNascimento(dto.getDataNascimento())
                 .email(dto.getEmail())
-                .senhaHash(dto.getSenha())
+                .senhaHash(null)
                 .cpfCnpj(dto.getCpfCnpj())
                 .perfil(dto.getPerfil())
                 .criadoEm(dto.getCriadoEm())
