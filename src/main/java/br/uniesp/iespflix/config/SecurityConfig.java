@@ -23,9 +23,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/h2/**"
                         ).permitAll()
                         .anyRequest().permitAll()
+                )
+                .headers(headers ->
+                        headers.frameOptions(frame -> frame.disable())
                 )
                 .httpBasic(Customizer.withDefaults());
 

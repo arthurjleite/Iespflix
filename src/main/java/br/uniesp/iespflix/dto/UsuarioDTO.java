@@ -2,6 +2,7 @@ package br.uniesp.iespflix.dto;
 
 import br.uniesp.iespflix.enums.PerfilUsuario;
 import br.uniesp.iespflix.validation.SenhaForte;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UsuarioDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @NotBlank(message = "O nome completo é obrigatório")
@@ -30,6 +32,7 @@ public class UsuarioDTO {
     @Size(max = 254, message = "O email deve ter no máximo 254 caracteres")
     private String email;
 
+    @Schema(example = "String123", description = "Senha do usuário")
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
     @SenhaForte
@@ -44,7 +47,9 @@ public class UsuarioDTO {
     @NotNull(message = "O perfil é obrigatório")
     private PerfilUsuario perfil;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime criadoEm;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime atualizadoEm;
 }

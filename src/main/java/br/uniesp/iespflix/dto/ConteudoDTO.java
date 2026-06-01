@@ -1,6 +1,7 @@
 package br.uniesp.iespflix.dto;
 
 import br.uniesp.iespflix.enums.TipoConteudo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ConteudoDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @NotBlank(message = "O título é obrigatório")
@@ -47,7 +49,9 @@ public class ConteudoDTO {
     @Size(max = 50, message = "O gênero deve ter no máximo 50 caracteres")
     private String genero;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime criadoEm;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime atualizadoEm;
 }

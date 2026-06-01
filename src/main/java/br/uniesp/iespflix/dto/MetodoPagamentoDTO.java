@@ -1,5 +1,6 @@
 package br.uniesp.iespflix.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class MetodoPagamentoDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @NotNull(message = "O usuário é obrigatório")
@@ -41,9 +43,9 @@ public class MetodoPagamentoDTO {
     @Size(max = 150, message = "O nome do portador deve ter no máximo 150 caracteres")
     private String nomePortador;
 
-    @NotBlank(message = "O token do gateway é obrigatório")
-    @Size(max = 120, message = "O token deve ter no máximo 120 caracteres")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private String tokenGateway;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime criadoEm;
 }

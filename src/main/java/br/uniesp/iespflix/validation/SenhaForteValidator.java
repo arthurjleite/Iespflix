@@ -8,8 +8,7 @@ public class SenhaForteValidator implements ConstraintValidator<SenhaForte, Stri
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null || value.trim().isEmpty()) {
-            return true; // Permite valores nulos/vazios passarem por esta validação,
-                         // permitindo que @NotBlank trate o erro separadamente se for o caso.
+            return true;
         }
 
         boolean temMaiuscula = value.matches(".*[A-Z].*");

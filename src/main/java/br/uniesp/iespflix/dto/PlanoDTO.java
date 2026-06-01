@@ -1,5 +1,6 @@
 package br.uniesp.iespflix.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PlanoDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @NotBlank(message = "O código do plano é obrigatório")

@@ -1,6 +1,7 @@
 package br.uniesp.iespflix.dto;
 
 import br.uniesp.iespflix.enums.StatusAssinatura;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AssinaturaDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @NotNull(message = "O usuário é obrigatório")
@@ -22,11 +24,12 @@ public class AssinaturaDTO {
     @NotNull(message = "O plano é obrigatório")
     private UUID planoId;
 
-    @NotNull(message = "O status da assinatura é obrigatório")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private StatusAssinatura status;
 
-    @NotNull(message = "A data de início é obrigatória")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime iniciadaEm;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime canceladaEm;
 }
