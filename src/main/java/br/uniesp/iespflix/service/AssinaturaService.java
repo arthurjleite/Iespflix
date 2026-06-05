@@ -15,6 +15,8 @@ import br.uniesp.iespflix.dto.PlanoDTO;
 import br.uniesp.iespflix.mapper.AssinaturaMapper;
 import br.uniesp.iespflix.mapper.PlanoMapper;
 import java.util.stream.Collectors;
+import br.uniesp.iespflix.observer.AssinaturaNotifier;
+import br.uniesp.iespflix.factory.AssinaturaFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +33,8 @@ public class AssinaturaService {
     private final UsuarioMapper usuarioMapper;
     private final PlanoMapper planoMapper;
     private final AssinaturaMapper assinaturaMapper;
+    private final AssinaturaNotifier assinaturaNotifier;
+    private final AssinaturaFactory assinaturaFactory;
 
     public AssinaturaDTO obterAssinaturaAtivaDoUsuario(UUID usuarioId) {
 
@@ -60,14 +64,14 @@ public class AssinaturaService {
         PlanoDTO planoDTO = planoService.buscarPorId(planoId);
         Plano plano = planoMapper.toEntity(planoDTO);
 
-        Assinatura assinatura = Assinatura.builder()
-                .usuario(usuario)
-                .plano(plano)
-                .status(StatusAssinatura.ATIVA)
-                .iniciadaEm(LocalDateTime.now())
-                .build();
+        Assinatura assinatura = assinaturaFactory.criarAssinaturaAtiva(usuario, plano);
 
         Assinatura assinaturaSalva = assinaturaRepository.save(assinatura);
+
+        assinaturaNotifier.notificar(
+                assinaturaSalva,
+                "ASSINATURA_CRIADA"
+        );
 
         return assinaturaMapper.toDTO(assinaturaSalva);
     }
@@ -85,6 +89,11 @@ public class AssinaturaService {
         assinatura.setCanceladaEm(LocalDateTime.now());
 
         Assinatura assinaturaAtualizada = assinaturaRepository.save(assinatura);
+
+        assinaturaNotifier.notificar(
+                assinaturaAtualizada,
+                "ASSINATURA_CANCELADA"
+        );
 
         return assinaturaMapper.toDTO(assinaturaAtualizada);
     }
